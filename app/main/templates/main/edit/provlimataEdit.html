@@ -1,0 +1,169 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block css%}
+<style>
+    #titlos-main {
+        background:url({% static 'pw_maze_black_2X.png' %});
+    }
+
+    .titlos {
+        text-align: center;
+        padding: 17px;
+        color: white;
+        margin: 20px -3.5%;
+        margin-top: 0;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% if provlimata %}
+    <script>
+        // window.location.href = "/all";
+    </script>
+{% endif %}
+
+<div style="width: 100%;">
+    <h1 id="titlos-main" class="titlos">Κατάσταση Υγείας</h1>
+
+    <div class="form-group" style="padding:1%;">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-check">
+                {{form.kardiaka}}
+                <label class="form-check-label"> <strong> Καρδιακά Προβλήματα</strong></label>
+            </div>
+            <br>
+            <div class="form-group d-none" id="kl">
+                <label>Λεπτομέρειες</label>
+                {{form.kardiakaLeptomeries}}
+            </div>
+            <br>
+
+            <div class="form-check">
+                {{form.asthma}}
+                <label class="form-check-label"> <strong> Άσθμα, Βρογχίτιδα</strong></label>
+            </div>
+            <br>
+            <div class="form-group d-none" id="al">
+                <label>Λεπτομέρειες</label>
+                {{form.asthmaLeptomeries}}
+            </div>
+            <br>
+
+            <div class="form-check">
+                {{form.lipothimia}}
+                <label class="form-check-label"> <strong> Λιποθυμία, Ζάλη, Επιληψία, Σπασμούς</strong></label>
+            </div>
+            <br>
+            <div class="form-group d-none" id="ll">
+                <label>Λεπτομέρειες</label>
+                {{form.lipothimiaLeptomeries}}
+            </div>
+            <br>
+
+            <div class="form-check">
+                {{form.allo}}
+                <label class="form-check-label"> <strong> Κάποιο άλλο Κλινικό Πρόβλημα το οποίο πιστεύεται ότι πρέπει να
+                        γνωρίζουμε ή αλλεργίες</strong></label>
+            </div>
+            <br>
+            <div class="form-group d-none" id="el">
+                <label>Λεπτομέρειες</label>
+                {{form.alloLeptomeries}}
+            </div>
+            <br>
+            <div class="d-flex">
+                <div class="p-2">
+                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                        data-target="#Akirosi">ΑΚΥΡΩΣΗ</button>
+                </div>
+                <div class="ml-auto p-2">
+                    <button type="submit" class="btn btn-success">ΑΠΟΘΗΚΕΥΣΗ</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="Akirosi" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Ακύρωση</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Είστε σίγουροι ότι θέλετε να το ακυρώσετε
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Κλήσιμο</button>
+                <a href="/{{mathitis.id}}"><button type="button" class="btn btn-danger">Ακύρωση</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+        if ($('#id_kardiaka').prop('checked')) {
+            document.getElementById("kl").classList.remove("d-none");
+        }
+        if ($('#id_asthma').prop('checked')) {
+            document.getElementById("al").classList.remove("d-none");
+        }
+        if ($('#id_lipothimia').prop('checked')) {
+            document.getElementById("ll").classList.remove("d-none");
+        }
+        if ($('#id_allo').prop('checked')) {
+            document.getElementById("el").classList.remove("d-none");
+        }
+
+
+    $("#id_kardiaka").on("click", function () {
+        if ($('#id_kardiaka').prop('checked')) {
+            document.getElementById("kl").classList.remove("d-none");
+        }
+        else {
+            document.getElementById("kl").classList.add("d-none");
+        }
+    });
+
+    $("#id_asthma").on("click", function () {
+        if ($('#id_asthma').prop('checked')) {
+            document.getElementById("al").classList.remove("d-none");
+        }
+        else {
+            document.getElementById("al").classList.add("d-none");
+        }
+    });
+
+    $("#id_lipothimia").on("click", function () {
+        if ($('#id_lipothimia').prop('checked')) {
+            document.getElementById("ll").classList.remove("d-none");
+        }
+        else {
+            document.getElementById("ll").classList.add("d-none");
+        }
+    });
+
+    $("#id_allo").on("click", function () {
+        if ($('#id_allo').prop('checked')) {
+            document.getElementById("el").classList.remove("d-none");
+        }
+        else {
+            document.getElementById("el").classList.add("d-none");
+        }
+    });
+
+</script>
+{% endblock javascript %}

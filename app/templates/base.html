@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+{% load pwa %}
+{%load static%}
+
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{% bootstrap_messages %}
+{{ form.media }}
+
+
+<html lang="en">
+
+<head>
+    {% progressive_web_app_meta %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taekwondo</title>
+</head>
+
+<style>
+    @font-face {
+        font-family: Roboto;
+        src: url({% static 'Roboto/Roboto-Regular.ttf' %});
+    }
+
+    @font-face {
+        font-family: Roboto;
+        font-weight: bold;
+        src: url({% static 'Roboto/Roboto-Bold.ttf' %});
+
+    }
+
+    div {
+        font-family: Roboto;
+    }
+
+    .form-control:focus {
+        background-color: #2e2e2e01;
+        border-color: #00000063;
+        -webkit-box-shadow: inset 0 1px 1px #00000013, 0 0 8px #14141499;
+        box-shadow: inset 0 1px 1px #00000013, 0 0 8px #14141499;
+    }
+
+    input[type=checkbox] {
+        /* Double-sized Checkboxes */
+        -ms-transform: scale(2);
+        /* IE */
+        -moz-transform: scale(2);
+        /* FF */
+        -webkit-transform: scale(2);
+        /* Safari and Chrome */
+        -o-transform: scale(2);
+        /* Opera */
+        padding: 10px;
+        margin: 5px 10px;
+        margin-left: -10px;
+    }
+
+    .form-check-label {
+        margin-left: 20px;
+    }
+
+
+</style>
+{% block css %}
+{% endblock %}
+
+<body>
+    {% block content %}
+    replace me
+    {% endblock %}
+
+    {% block javascript %}
+    {% endblock javascript %}
+</body>
+
+</html>

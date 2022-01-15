@@ -1,0 +1,117 @@
+{% extends 'base.html'%}
+{% load static %}
+{% load mathfilters %}
+
+{% block css%}
+<style>
+    #titlos-main {
+        background:url({% static 'pw_maze_black_2X.png' %});
+    }
+
+    .titlos {
+        text-align: center;
+        padding: 17px;
+        color: white;
+        margin: 20px -3.5%;
+        margin-top: 0;
+        font-weight: bold;
+    }
+
+    .fix {
+        max-width: 50%;
+        margin: auto;
+    }
+
+    @media screen and (max-width: 1100px) {
+        .fix {
+            max-width: 90%;
+        }
+    }
+
+    body {
+        line-height: 1.7;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1 id="titlos-main" class="titlos">Μαθητής</h1>
+<div class="form-group fix">
+    <div class="media">
+        <div class="media-body">
+            <strong>Ονοματεπώνυμο: </strong>{{mathitis.onoma|capfirst}} {{mathitis.epitheto|capfirst}}</a>
+            <br>
+            <strong>Ημ. Γεννήσεως: </strong>{{mathitis.genethlia | date:"d F Y" }}
+            <br>
+            {% if mathitis.kinito == NULL %}
+            <strong>Κινητό: </strong>
+            {% else %}
+            <strong>Κινητό: </strong><a href="tel:{{mathitis.kinito}}">{{mathitis.kinito}}</a>
+            {% endif %}
+            <br>
+            {% if mathitis.tilefonoS == NULL %}
+            <strong>Τηλ. Οικίας: </strong>
+            {% else %}
+            <strong>Τηλ. Οικίας: </strong><a href="tel:{{mathitis.tilefonoS}}">{{mathitis.tilefonoS}}</a>
+            {% endif %}
+            <br>
+            <strong>Διεύθυνση: </strong>{{mathitis.diefthinsi}}
+            <br>
+            <strong>Περιοχή: </strong>{{mathitis.perioxi}}, {{mathitis.tk}}
+            <br>
+            <strong>Έναρξη μαθημάτων: </strong>{{mathitis.enarksi | date:"d F Y" }}
+            <br>
+            {%if zoni.num >= 11 %}
+            <strong>Ζώνη: </strong>{{zoni.name}} ( Dan {{ zoni.num|add:-10|abs }} )
+            {% elif zoni.num == 0 %}
+            <strong>Ζώνη: </strong>{{zoni.name}}
+            {% else %}
+            <strong>Ζώνη: </strong>{{zoni.name}} ( kup {{ zoni.num|add:-11|abs }} )
+            {% endif %}
+        </div>
+        <img src="../media/{{mathitis.fotographia}}" class="ml-3" alt="No Image"
+            style="max-width: 40%; max-height:250px;">
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <label><strong>Ενεργός: </strong></label>
+        {{ form.energos }}
+
+        <br><br>
+        <div class="d-flex">
+            <div class="p-2">
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Akirosi">ΑΚΥΡΩΣΗ</button>
+            </div>
+            <div class="ml-auto p-2">
+                <button type="submit" class="btn btn-success">ΑΠΟΘΗΚΕΥΣΗ</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="Akirosi" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Ακύρωση</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Είστε σίγουροι ότι θέλετε να το ακυρώσετε
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Κλήσιμο</button>
+                <a href="/all"><button type="button" class="btn btn-danger">Ακύρωση</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

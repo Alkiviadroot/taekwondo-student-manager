@@ -1,0 +1,41 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block css%}
+
+{% endblock %}
+
+
+
+{% block content %}
+<div class="">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.field.value }}
+        {{ formset.management_form }}
+        {% for form in formset %}
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item"> {{form.parousia}} </li>
+            <a href="" id="mathitis-link-{{forloop.counter0}}">
+                <li class="list-group-item" id="mathitis-{{forloop.counter0}}" style="min-width: 500px;"></li>
+            </a>
+            <li class="list-group-item" id="genethlia-{{forloop.counter0}}" style="min-width: 200px;"></li>
+            <li class="list-group-item" id="zoni-{{forloop.counter0}}" style="min-width: 200px;"></li>
+        </ul>
+        <div class="d-none">{{form.mathitis}}</div>
+        {%endfor%}
+        <br>
+        <button type="submit" class="btn btn-success">Αποθήκευση</button>
+    </form>
+</div>
+{% for mathitis in mathites%}
+<script>
+    document.getElementById("id_form-{{forloop.counter0}}-mathitis").value = {{ mathitis.id }}
+    document.getElementById("mathitis-link-{{forloop.counter0}}").href = "/{{ mathitis.id }}"
+    document.getElementById("mathitis-{{forloop.counter0}}").innerHTML = "{{mathitis.onoma|capfirst}} {{mathitis.epitheto|capfirst}}"
+    document.getElementById("genethlia-{{forloop.counter0}}").innerHTML = '{{mathitis.genethlia | date:"d F Y"}}'
+
+</script>
+{%endfor%}
+
+{% endblock %}

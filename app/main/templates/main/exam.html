@@ -1,0 +1,180 @@
+{% extends 'base.html'%}
+{% load static %}
+
+
+{% load mathfilters %}
+
+
+{% block css%}
+<style>
+    #titlos-main {
+        background:url({% static 'pw_maze_black_2X.png' %});
+    }
+
+    .titlos {
+        text-align: center;
+        padding: 17px;
+        color: white;
+        margin: 20px 0;
+        margin-top: 0;
+        font-weight: bold;
+    }
+
+    .belt {
+        color: white;
+        text-shadow: -2px -2px 0 #000000a9, 2px -2px 0 #000000a9, -2px 2px 0 #000000a9, 2px 2px 0 #000000a9;
+        border-style: solid;
+        border-left: 0;
+        border-right: 0;
+        border-color: #000000a9;
+
+        background: linear-gradient( {{colors.1}} 0%, {{colors.1}} 50%, {{colors.2}} 50%, {{colors.2}} 100%);
+    }
+
+    .fix {
+        max-width: 50%;
+        margin: auto;
+    }
+
+    @media screen and (max-width: 1100px) {
+        .fix {
+            max-width: 90%;
+        }
+    }
+
+    .link, .link:hover {
+        color: black;
+    }
+
+    .apotixia{
+
+        background: #ff00008a;
+    }
+</style>
+{% endblock %}
+{% block content %}
+
+<div style="width: 100%;">
+    <h1 class="belt titlos">Εξέταση</h1>
+    <div class="form-group fix">
+        <div class="media">
+            <div class="media-body">
+                <strong>Ονοματεπώνυμο: </strong><a href="/{{mathitis.id}}" class="link">{{mathitis.onoma|capfirst}}
+                    {{mathitis.epitheto|capfirst}}</a>
+                <br>
+                <strong>Ημ. Γεννήσεως: </strong>{{mathitis.genethlia | date:"d F Y"}}
+                <br>
+                {% if mathitis.kinito == NULL %}
+                <strong>Κινητό: </strong>
+                {% else %}
+                <strong>Κινητό: </strong><a href="tel:{{mathitis.kinito}}">{{mathitis.kinito}}</a>
+                {% endif %}
+                <br>
+                {% if mathitis.tilefonoS == NULL %}
+                <strong>Τηλ. Οικίας: </strong>
+                {% else %}
+                <strong>Τηλ. Οικίας: </strong><a href="tel:{{mathitis.tilefonoS}}">{{mathitis.tilefonoS}}</a>
+                {% endif %}
+                <br>
+                <strong>Έναρξη μαθημάτων: </strong>{{mathitis.enarksi | date:"d F Y"}}
+            </div>
+            <img src="../media/{{mathitis.fotographia}}" class="ml-3" alt="No Image"
+                style="max-width: 65%; max-height:250px;">
+        </div>
+        <br>
+        <script>
+            counter=11;
+            counterD=0;
+        </script>
+        {% for kup in progress %}
+        {% if kup.epitixia %}
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item " style="min-width:110px"><a href="" id="stage{{kup.id}}" class="link" data-toggle="modal"
+                data-target="#modal{{kup.id}}"></a> </li>
+            
+            <li class="list-group-item flex-fill">{{kup.kup | date:"d F Y"}}</li>
+            
+            <script>
+                counter-=1;
+                if(counter>0)
+                    document.getElementById("stage{{kup.id}}").innerHTML="Kup "+ counter;
+                else{
+                    counterD+=1;
+                    document.getElementById("stage{{kup.id}}").innerHTML="Dan "+ counterD;
+                }
+                if(counterD>=10){
+                    $(document).ready(function () {
+                    document.getElementById("submit").setAttribute("disabled", "1");
+                    });
+                }
+            </script>
+        
+    </ul>    
+        {% else %}
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item apotixia" style="min-width:100px" > <a href="" class="link" data-toggle="modal"
+                data-target="#modal{{kup.id}}"> Αποτυχια </a></li>
+            <li class="list-group-item flex-fill apotixia">{{kup.kup | date:"d F Y"}}</li>
+        </ul>
+        {% endif %}
+
+        <!-- Modal -->
+        <div class="modal fade" id="modal{{kup.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Σχόλια</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ kup.comment }}
+                        
+                    </div>
+
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Κλήσιμο</button>
+                        <a href="exetasi/edit/{{kup.id}}"><button type="button" class="btn btn-primary">Επεξεργασία</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {% endfor %}
+        <br>
+        <hr>
+        <br>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-check">
+                {{form.epitixia}}
+                <label class="form-check-label"> <strong> Επυτιχία</strong></label>
+            </div>
+            <br>
+            <label>Ημ. Εξέτασης</label>
+            {{form.kup}}
+            <br>
+            <div class="form-group">
+                <label>Σχόλια</label>
+                {{form.comment}}
+            </div>
+
+            <div class="d-flex">
+                <div class="p-2">
+                    <a href="/"><button type="button" class="btn btn-secondary">ΑΡΧΙΚΗ</button></a>
+                </div>
+                <div class="ml-auto p-2">
+                    <button id="submit" type="submit" class="btn btn-success">ΑΠΟΘΗΚΕΥΣΗ</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

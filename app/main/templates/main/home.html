@@ -1,0 +1,52 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block css%}
+<style>
+    body {
+        background:url({% static 'pw_maze_black_2X.png' %});
+    }
+
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 200px;
+    }
+
+    .fix {
+        max-width: 60%;
+        margin: auto;
+    }
+
+    @media screen and (max-width: 700px) {
+        .fix {
+            min-width: 100%;
+            max-width: 100%;
+        }
+    }
+
+    .btn-light {
+        color: #0e0e0e;
+        font-weight: bold;
+        background-color: #fe9d0e;
+        border-color: #fd8700;
+        margin-bottom: 30px;
+    }
+</style>
+{% endblock %}
+
+
+
+{% block content %}
+    <br>
+    <img src="{% static 'logo.png' %}" alt="" class="center">
+    <br>
+    <div class="fix">
+        <a href=""><button type="button" class="btn btn-light btn-lg" style="width: 100%;">Απούσιολόγιο</button></a>
+        <a href="{% url 'main:all_mathites' %}"><button type="button" class="btn btn-light btn-lg" style="width: 100%;">Λίστα Μαθητών</button></a>
+        <a href="{% url 'main:mathitis_add' %}"><button type="button" class="btn btn-light btn-lg" style="width: 100%;">Καινούριος Μαθητής</button></a>
+        <a href="{% url 'main:groups' %}"><button type="button" class="btn btn-light btn-lg" style="width: 100%;">Groups</button></a>
+        <a href="/logout"><button type="button" class="btn btn-light btn-lg" style="width: 100%;">Αποσύνδεση</button></a>
+    </div>
+{% endblock %}

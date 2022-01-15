@@ -1,0 +1,97 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block css%}
+<style>
+    #titlos-main {
+        background:url({% static 'pw_maze_black_2X.png' %});
+    }
+
+    .titlos {
+        text-align: center;
+        padding: 16px;
+        color: white;
+        margin: 0;
+        font-weight: bold;
+        margin: auto;
+    }
+
+    .navbar-dark .navbar-text {
+        color: white;
+        font-size: 2.5rem;
+    }
+
+    a:link {
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div style="width: 100%;">
+    <nav class="navbar navbar-dark bg-dark titlos" id="titlos-main">
+        <a href="/" class="navbar-text">
+            < </a>
+                <h1 class="navbar-text titlos">Groups</h1>
+    </nav>
+</div>
+
+{% for i in groups.last.groupNum|make_list %}
+<br>
+<div class="container">
+    <ul class="list-group">
+        <li class="list-group-item active" aria-current="true" style="text-align: center;"><strong>Group
+                {{forloop.counter}}</strong></li>
+        {% for group in groups %}
+        {% if group.group == i|slugify %}
+        <li class="list-group-item"><a href="/groups/{{group.id}}">{{group.mera}} ( {{group.arxi|time:"H:i"}} -
+                {{group.telos|time:"H:i"}} )</a></li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+{% endfor %}
+
+
+<br>
+<form method="post">
+    <div class="form-group" style="padding:1%;">
+
+        {% csrf_token %}
+        <label>Group</label>
+        {{form.group}}
+        <br>
+        <label>Ημέρα</label>
+        {{form.mera}}
+        <br>
+        <div class="row">
+            <div class="col">
+                <label>Αρχή</label>
+                {{form.arxi}}
+            </div>
+            <div class="col">
+                <label>Τέλος</label>
+                {{form.telos}}
+            </div>
+            <div class="d-none">
+                {{form.groupNum}}
+            </div>
+        </div>
+        <br>
+        <div class="d-flex">
+            <div class="ml-auto p-2">
+                <button type="submit" class="btn btn-success">ΑΠΟΘΗΚΕΥΣΗ</button>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+
+{% block javascript %}
+<script>
+    document.getElementById("id_mera").classList.add("form-control");
+    document.getElementById("id_group").classList.add("form-control");
+</script>
+{% endblock javascript %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block css %}
+<style>
+    body {
+        background:url({% static 'pw_maze_black_2X.png' %});
+    }
+
+    #container {
+        padding-top: 10%;
+        width: 40%;
+    }
+
+    @media screen and (max-width: 800px) {
+        #container {
+            padding-top: 40%;
+            width: 90%;
+        }
+    }
+
+    #id_username:focus,
+    #id_password:focus {
+        background-color: aliceblue;
+    }
+
+    label {
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div id="container" class="container">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Όνομα Χρήστη</label>
+            {{form.username}}
+        </div>
+        <div class="form-group">
+            <label>Κωδικός</label>
+            {{form.password}}
+        </div>
+        <button type="submit" class="btn btn-warning">Σύνδεση</button>
+    </form>
+
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    document.getElementById("id_username").classList.add("form-control");
+    document.getElementById("id_password").classList.add("form-control");
+</script>
+{% endblock javascript %}

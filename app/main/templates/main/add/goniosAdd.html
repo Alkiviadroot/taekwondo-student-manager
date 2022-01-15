@@ -1,0 +1,141 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block css%}
+<style>
+    #titlos-main {
+        background:url({% static 'pw_maze_black_2X.png' %});
+    }
+
+    .titlos {
+        text-align: center;
+        padding: 17px;
+        color: white;
+        margin: 5px -3.5%;
+        margin-top: 0;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div style="width: 100%;">
+    <h1 id="titlos-main" class="titlos">Πληροφορίες Οικογένειας</h1>
+
+    <div class="form-group" style="padding:1%;">
+        <div class="alert alert-secondary" role="alert">
+        <strong>Yπάρχοντα: </strong> 
+        {% for gonio in gonios %}
+        {% if gonio.gonios == "Άλλο" %}
+        {{gonio.allo}}, 
+        {% else %}
+        {{gonio.gonios}}, 
+        {% endif %}
+        {% endfor %}
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            <div>
+                <label>Επαφή έκτακτης ανάγκης *</label>
+                {{ form.gonios }}
+            </div>
+            <div class="d-none" id="allo-field">
+                <br>
+                <label>Άλλη Επαφή</label>
+                {{ form.allo }}
+            </div>
+            <br>
+            <div class="row">
+
+                <div class="col">
+                    <label>Όνομα *</label>
+                    {{ form.onoma}}
+                </div>
+
+                <div class="col">
+                    <label>Επώνυμο *</label>
+                    {{ form.epitheto }}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+
+                <div class="col">
+                    <label>Κινητό Τηλ.</label>
+                    {{ form.tilefono}}
+                </div>
+
+                <div class="col">
+                    <label>Email</label>
+                    {{ form.email }}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+
+                <div class="col">
+                    <label>Επάγγελμα</label>
+                    {{ form.epankelma}}
+                </div>
+
+                <div class="col">
+                    <label>Τηλ. Εργασίας</label>
+                    {{ form.tilefonoE }}
+                </div>
+            </div>
+            <br>
+            <div class="d-flex">
+                <div class="p-2">
+                    <button type="button" class="btn btn-secondary" data-toggle="modal"
+                        data-target="#Telos">ΤΕΛΟΣ</button>
+                </div>
+                <div class="ml-auto p-2">
+                    <button type="submit" class="btn btn-success">ΑΠΟΘΗΚΕΥΣΗ</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="Telos" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Επόμενο</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Αν προχωρήσετε ο,τι Δεν Αποθηκεύσατε θα χαθεί.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Κλήσιμο</button>
+                <a href="/{{mathitis.id}}"><button type="button" class="btn btn-primary">Τέλος</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+    epafi = document.getElementById("id_gonios")
+    epafi.classList.add("form-control");
+    $("#id_gonios").change(function () {
+        if (epafi.value == "Άλλο") {
+            document.getElementById("allo-field").classList.remove("d-none");
+        }
+        else {
+            document.getElementById("allo-field").classList.add("d-none");
+        }
+    });
+
+
+</script>
+{% endblock javascript %}

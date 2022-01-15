@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% load mathfilters %}
+
+{% block css%}
+<style>
+    #titlos-main {
+        background:url({% static 'pw_maze_black_2X.png' %});
+    }
+
+    .titlos {
+        text-align: center;
+        padding: 16px;
+        color: white;
+        margin: 0;
+        font-weight: bold;
+        margin: auto;
+    }
+
+    .fix {
+        max-width: 50%;
+        margin: auto;
+    }
+
+    @media screen and (max-width: 1100px) {
+        .fix {
+            max-width: 90%;
+        }
+    }
+
+    #link {
+        color: black;
+    }
+
+    body {
+        line-height: 1.7;
+    }
+
+    .navbar-dark .navbar-text {
+        color: white;
+        font-size: 2.5rem;
+        cursor: pointer;
+    }
+
+    a:link {
+        text-decoration: none;
+    }
+
+    .btn {
+        margin-bottom: 12px;
+        margin-right: 12px;
+        padding: 12px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div style="width: 100%;margin-bottom: 30px;">
+    <nav class="navbar navbar-dark bg-dark titlos" id="titlos-main">
+        <a href="/all" class="navbar-text back">
+            < </a>
+                <h1 class="navbar-text titlos">Μαθητής</h1>
+    </nav>
+</div>
+<div class="form-group fix">
+    <div class="media">
+        <div class="media-body">
+            <strong>Ονοματεπώνυμο: </strong>{{mathitis.onoma|capfirst}} {{mathitis.epitheto|capfirst}}</a>
+            <br>
+            <strong>Ημ. Γεννήσεως: </strong>{{mathitis.genethlia | date:"d F Y" }}
+            <br>
+            {% if mathitis.kinito == NULL %}
+            <strong>Κινητό: </strong>
+            {% else %}
+            <strong>Κινητό: </strong><a href="tel:{{mathitis.kinito}}">{{mathitis.kinito}}</a>
+            {% endif %}
+            <br>
+            {% if mathitis.tilefonoS == NULL %}
+            <strong>Τηλ. Οικίας: </strong>
+            {% else %}
+            <strong>Τηλ. Οικίας: </strong><a href="tel:{{mathitis.tilefonoS}}">{{mathitis.tilefonoS}}</a>
+            {% endif %}
+            <br>
+            <div class="d-none" id="perisotera">
+                <strong>Διεύθυνση: </strong>{{mathitis.diefthinsi}}
+                <br>
+                <strong>Περιοχή: </strong>{{mathitis.perioxi}}, {{mathitis.tk}}
+                <br>
+                <strong>Έναρξη μαθημάτων: </strong>{{mathitis.enarksi | date:"d F Y" }}
+                <br>
+                <strong>Group: </strong>{{mathitis.group}}
+                <br>
+            </div>
+            {%if zoni.num >= 11 %}
+            <strong>Ζώνη: </strong>{{zoni.name}} ( Dan {{ zoni.num|add:-10|abs }} )
+            {% elif zoni.num == 0 %}
+            <strong>Ζώνη: </strong>{{zoni.name}}
+            {% else %}
+            <strong>Ζώνη: </strong>{{zoni.name}} ( kup {{ zoni.num|add:-11|abs }} )
+            {% endif %}
+            <br>
+            {% for adia in adies %}
+            {% if adia.fotografiaAdia %}
+            <strong>Άδεια χρήσης φωτογραφιών: </strong>ΝΑΙ
+            {% else %}
+            <strong>Άδεια χρήσης φωτογραφιών: </strong>ΟΧΙ
+            {% endif %}
+            {% endfor %}
+            {% for provlima in provlimata%}
+            {% if provlima.kardiaka == False and provlima.asthma == False and provlima.lipothimia == False and provlima.allo == False %}
+            <br>
+            <strong>Κατάσταση Υγείας: </strong>Υγιής
+            {% endif %}
+            {% endfor %}
+        </div>
+        <img src="../media/{{mathitis.fotographia}}" class="ml-3" alt="No Image"
+            style="max-width: 40%; max-height:250px;">
+    </div>
+    <br>
+    {% for provlima in provlimata %}
+    {% if provlima.kardiaka == True or provlima.asthma == True or provlima.lipothimia == True or provlima.allo == True%}
+    <h3>Κατάσταση Υγείας</h3>
+    {% endif %}
+
+    {% if provlima.kardiaka == True %}
+    <strong> Καρδιακά Προβλήματα: </strong>{{provlima.kardiakaLeptomeries}}
+    <br>
+    {% endif %}
+
+    {% if provlima.asthma == True %}
+    <strong> Άσθμα, Βρογχίτιδα: </strong>{{provlima.asthmaLeptomeries}}
+    <br>
+    {% endif %}
+
+    {% if provlima.lipothimia == True %}
+    <strong> Λιποθυμία, Ζάλη, Επιληψία, Σπασμούς: </strong>{{provlima.lipothimiaLeptomeries}}
+    <br>
+    {% endif %}
+
+    {% if provlima.allo == True %}
+    <strong>Κάποιο άλλο Κλινικό Πρόβλημα το οποίο πιστεύεται ότι πρέπει να
+        γνωρίζουμε ή αλλεργίες: </strong>{{provlima.alloLeptomeries}}
+    {% endif %}
+    {% empty %}
+    den iparxi
+    {% endfor %}
+
+    <br>
+    {% for gonio in gonios %}
+    <br>
+    {% if gonio.gonios != "Άλλο" %}
+    <h3>{{gonio.gonios|capfirst}}</h3>
+    {% else %}
+    <h3>{{gonio.allo|capfirst}}</h3>
+    {% endif %}
+    <strong>Ονοματεπώνυμο: </strong>{{gonio.onoma|capfirst}} {{gonio.epitheto|capfirst}}
+    <br>
+    {% if gonio.tilefono == NULL %}
+    <strong>Κινητό: </strong>
+    {% else %}
+    <strong>Κινητό: </strong><a href="tel:{{gonio.tilefono}}">{{gonio.tilefono}}</a>
+    {% endif %}
+    <br>
+    <div class="d-none" id="perisotera">
+        <strong>Email: </strong><a href="mailto: {{gonio.email}}">{{gonio.email}}</a>
+        <br>
+        <strong>Επάγγελμα: </strong>{{gonio.epankelma}}
+        <br>
+    </div>
+    {% if gonio.tilefonoE == NULL %}
+    <strong>Τηλ. Εργασίας: </strong>
+    {% else %}
+    <strong>Τηλ. Εργασίας: </strong><a href="tel:{{gonio.tilefonoE}}">{{gonio.tilefonoE}}</a>
+    {% endif %}
+    <br>
+    {% endfor %}
+
+    {% if paralavi %}
+    <br>
+    <h3>Εξουσιοδοτημένα άτομα παραλαβής</h3>
+    {% endif %}
+    {% for person in paralavi %}
+    {% if person.tilefono == NULL %}
+    <strong>{{person.sxesi|capfirst}}: </strong>{{person.onoma|capfirst}} {{person.epitheto|capfirst}}
+    {% else %}
+    <strong>{{person.sxesi|capfirst}}: </strong>{{person.onoma|capfirst}} {{person.epitheto|capfirst}} ( <a
+        href="tel:{{person.tilefono}}">{{person.tilefono}}</a> )
+    {% endif %}
+    <br>
+    {% endfor %}
+
+    <br>
+    <a href="/"><button type="button" class="btn btn-secondary">Αρχική</button></a>
+
+    <button id="detail" type="button" class="btn btn-primary">Περισσότερα</button>
+
+    <button id="forma" type="button" class="btn btn-dark">Φόρμα</button>
+    
+    <a href="/{{mathitis.id}}/exetasi"><button type="button" class="btn btn-dark">Εξέταση</button></a>
+    
+    <button type="button" class="btn btn-success">Πληρωμή</button>
+
+    <div class="btn-group">
+    <div class="dropdown">
+        <button type="button" id="edit" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Edit
+        </button>
+        <div class="dropdown-menu" aria-labelledby="edit">
+            <a class="dropdown-item" href="{{mathitis.id}}/edit">Μαθητής</a>
+            {% for provlima in provlimata %}
+            <a class="dropdown-item" href="{{mathitis.id}}/edit/provlimata/{{provlima.id}}">Κατάσταση Υγείας</a>
+            {% endfor %}
+
+            {% for adia in adies %}
+            <a class="dropdown-item" href="{{mathitis.id}}/edit/adies/{{adia.id}}">Άδειες</a>
+            {% endfor %}
+
+            <div class="dropdown-divider"></div>
+
+            {% for gonio in gonios %}
+            {% if gonio.gonios != "Άλλο" %}
+            <a class="dropdown-item" href="{{mathitis.id}}/edit/gonios/{{gonio.id}}">{{gonio.gonios|capfirst}}</a>
+            {% else %}
+            <a class="dropdown-item" href="{{mathitis.id}}/edit/gonios/{{gonio.id}}">{{gonio.allo|capfirst}}</a>
+            {% endif %}
+            {% endfor %}
+            <div class="dropdown-divider"></div>
+            {% for person in paralavi %}
+            <a class="dropdown-item" href="{{mathitis.id}}/edit/paralavi/{{person.id}}">{{person.sxesi|capfirst}}</a>
+            {% endfor %}
+
+
+
+
+        </div>
+    </div>
+    <div class="dropdown">
+        <button type="button" id="add" class="btn btn-outline-info dropdown-toggle" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Add
+        </button>
+        <div class="dropdown-menu" aria-labelledby="add">
+            <a class="dropdown-item" href="{{mathitis.id}}/add/gonios">Επαφή έκτακτης ανάγκης</a>
+            <a class="dropdown-item" href="{{mathitis.id}}/add/paralavi">Εξουσιοδοτημένο άτομο παραλαβής</a>
+        </div>
+    </div>
+    </div>
+    <br>
+    {% for adia in adies %}
+    <br>
+    <img id="forma_id" src="../media/{{adia.forma}}" alt="No Image" style="max-width: 100%;" class="d-none">
+    {% endfor %}
+</div>
+{% endblock %}
+
+
+{% block javascript %}
+<script>
+    document.getElementById('detail').onclick = function () {
+        if (document.getElementById('detail').innerHTML == "Περισσότερα") {
+            document.querySelectorAll('[id=perisotera]').forEach(element => {
+                element.classList.remove("d-none");
+            });
+            document.getElementById('detail').innerHTML = "Λιγότερα"
+        }
+        else {
+            document.querySelectorAll('[id=perisotera]').forEach(element => {
+                element.classList.add("d-none");
+            });
+            document.getElementById('detail').innerHTML = "Περισσότερα"
+        }
+    }
+
+    document.getElementById('forma').onclick = function () {
+        if (document.getElementById('forma_id').className == "d-none") {
+            document.getElementById('forma_id').classList.remove("d-none")
+        }
+        else {
+            document.getElementById('forma_id').classList.add("d-none")
+        }
+    }
+</script>
+{% endblock javascript %}

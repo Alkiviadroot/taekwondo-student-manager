@@ -1,0 +1,62 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block css%}
+<style>
+    #titlos-main {
+        background:url({% static 'pw_maze_black_2X.png' %});
+    }
+
+    .titlos {
+        text-align: center;
+        padding: 17px;
+        color: white;
+        margin: 20px -3.5%;
+        margin-top: 0;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% if adies %}
+<script>
+    window.history.forward();
+</script>
+{% endif %}
+
+<div style="width: 100%;">
+    <h1 id="titlos-main" class="titlos">Άδειες</h1>
+
+    <div class="form-group" style="padding:1%;">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-check">
+                {{form.fotografiaAdia}}
+                <label class="form-check-label">Κοινοποίηση φωτογραφικού υλικού </label>
+            </div>
+            <br>
+            <div class="custom-file">
+                {{ form.forma }}
+                <label class="custom-file-label" for="customFile">Φωτογραφία Φόρμας</label>
+            </div>
+            <br><br>
+            <div class="d-flex">
+                <div class="ml-auto p-2">
+                    <button type="submit" class="btn btn-success">ΑΠΟΘΗΚΕΥΣΗ</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+    $(".custom-file-input").on("change", function () {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+</script>
+{% endblock javascript %}

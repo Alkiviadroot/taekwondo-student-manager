@@ -1,0 +1,83 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block css%}
+<style>
+    #titlos-main {
+        background:url({% static 'pw_maze_black_2X.png' %});
+    }
+
+    .titlos {
+        text-align: center;
+        padding: 17px;
+        color: white;
+        margin: 20px -3.5%;
+        margin-top: 0;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div style="width: 100%;">
+    <h1 id="titlos-main" class="titlos">Άδειες</h1>
+
+    <div class="form-group" style="padding:1%;">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-check">
+                {{form.fotografiaAdia}}
+                <label class="form-check-label">Κοινοποίηση φωτογραφικού υλικού </label>
+            </div>
+            <br>
+            <div class="custom-file">
+                {{ form.forma }}
+                <label class="custom-file-label" for="customFile">Φωτογραφία Φόρμας</label>
+            </div>
+            <br><br>
+                <div class="d-flex">
+                    <div class="p-2">
+                        <button type="button" class="btn btn-danger" data-toggle="modal"
+                            data-target="#Akirosi">ΑΚΥΡΩΣΗ</button>
+                    </div>
+                    <div class="ml-auto p-2">
+                        <button type="submit" class="btn btn-success">ΑΠΟΘΗΚΕΥΣΗ</button>
+                    </div>
+                </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="Akirosi" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Ακύρωση</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Είστε σίγουροι ότι θέλετε να το ακυρώσετε
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Κλήσιμο</button>
+                <a href="/{{mathitis.id}}"><button type="button" class="btn btn-danger">Ακύρωση</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+    $(".custom-file-input").on("change", function () {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+</script>
+{% endblock javascript %}

@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - 8000:8000
+    volumes:
+        - ./app:/app
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      - DEBUG=1
+  
+  duckdns:
+    image: lscr.io/linuxserver/duckdns
+    container_name: duckdns
+    environment:
+      - TZ=Asia/Nicosia
+      - SUBDOMAINS=pambostkd
+      - TOKEN=92707372-bb27-4d2d-8486-e14143ac4e38
+    restart: unless-stopped
