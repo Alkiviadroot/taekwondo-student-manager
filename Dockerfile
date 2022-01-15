@@ -1,15 +1,21 @@
-FROM python:3.10.0-slim
+FROM python:alpine
+
+ENV PATH="/scripts:${PATH}"
 
 COPY ./requirements.txt /requirements.txt
+RUN apk add --update --no-cache --virtual .tmp gcc libc-dev linux-headers
+RUN apk add jpeg-dev zlib-dev libjpeg
+RUN pip install -r /requirements.txt
+RUN apk del .tmp
+
+RUN mkdir /app
 COPY ./app /app
 WORKDIR /app
+COPY ./scripts /scripts
 
+RUN chmod +x /scripts/*
 
-RUN python -m venv /py && \
-    /py/bin/pip install --upgrade pip && \
-    /py/bin/pip install -r /requirements.txt && \
-    adduser --disabled-password --no-create-home django-user
+RUN mkdir -p /vol/web/media
+RUN mkdir -p /vol/web/static
 
-ENV PATH="/py/bin:$PATH"
-
-USER django-user
+CMD ["entrypoint.sh"]
