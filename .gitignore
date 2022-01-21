@@ -3,5 +3,4 @@ data/
 .dockerignore
 docker-compose.yml
 Dockerfile
-
-*/__pycache__/
+app/app/__pycache__/
