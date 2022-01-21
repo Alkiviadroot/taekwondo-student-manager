@@ -10,9 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-from pathlib import Path
 import os
-
+from pathlib import Path
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,13 +22,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-e$oe7swld+f%y!qp=czsdx8k&z_tafo266d=+z82*qu6%%7n^v'
+SECRET_KEY = os.environ.get('SECRET_KEY','changeme')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(os.environ.get('DEBUG', 0)))
 
-ALLOWED_HOSTS = ["127.0.0.1",os.environ.get('HOST')]
-
+ALLOWED_HOSTS = []
+ALLOWED_HOSTS.extend(filter( None, os.environ.get('HOSTS','').split(','),))
 
 # Application definition
 
@@ -140,10 +139,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT= "/static"
+STATIC_ROOT= "/vol/web/static/"
+# STATIC_ROOT= "/main/static/"
+
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = '/vol/web/media/'
+# MEDIA_ROOT = '/media/'
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -154,10 +158,10 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login'
 
 # PWA
-PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static', 'sw.js')
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'main/static', 'sw.js')
 
 
-srcpath = os.path.join(MEDIA_URL, 'logo.png')
+srcpath = os.path.join(STATIC_URL, 'logo.png')
 
 PWA_APP_NAME = 'Pambos Taekwondo'
 PWA_APP_DESCRIPTION = "Taekwondo"

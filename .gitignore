@@ -1,0 +1,7 @@
+data/
+
+.dockerignore
+docker-compose.yml
+Dockerfile
+
+*/__pycache__/

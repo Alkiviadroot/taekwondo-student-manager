@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.9'
 
 services:
   app:
@@ -8,16 +8,9 @@ services:
       - 8000:8000
     volumes:
         - ./app:/app
+        - ./data:/vol/web
+
     command: sh -c "python manage.py runserver 0.0.0.0:8000"
     environment:
       - DEBUG=1
-      - HOST=pambostkd.duckdns.org
-  
-  duckdns:
-    image: lscr.io/linuxserver/duckdns
-    container_name: duckdns
-    environment:
-      - TZ=Asia/Nicosia
-      - SUBDOMAINS=pambostkd
-      - TOKEN=92707372-bb27-4d2d-8486-e14143ac4e38
-    restart: unless-stopped
+      - HOSTS=0.0.0.0,pambostkd.duckdns.org
